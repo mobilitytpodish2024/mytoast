@@ -1,0 +1,11 @@
+# configuration file for building snapshots and releases with jitpack.io
+jdk:
+  - openjdk17
+before_install:
+  - ./scripts/prepareJitpackEnvironment.sh
+install:
+  - FILE="-Dfile=mytoast-release.aar"
+  - mvn install:install-file $FILE -DgroupId=com.github.mobilitytpodish2024 -DartifactId=mytoast -Dversion=1.0.1 -Dpackaging=aar -DgeneratePom=true
+
+
+
