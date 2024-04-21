@@ -1,5 +1,23 @@
+
+buildscript {
+    ext.kotlin_version = '1.7.20'
+    repositories {
+        google()
+        mavenCentral()
+        mavenLocal()            // << --- ADD This
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.1.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+
+
 plugins {
     id 'com.android.library'
+    id 'maven-publish'
 }
 
 android {
@@ -18,6 +36,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            consumerProguardFiles 'proguard-rules.pro'
+            consumerProguardFiles 'consumer-rules.pro'       // << --- ADD This
         }
     }
     compileOptions {
@@ -33,4 +53,23 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+
+afterEvaluate {
+    android.libraryVariants.each() {}
+}
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.github.mobilitytpodish2024'
+            artifactId = 'mytoast'
+            version = "1.0.1"
+            pom {
+                description = 'DESCRIPTION'
+            }
+        }
+    }
+    repositories {               // << --- ADD This
+        mavenLocal()
+    }
 }
